@@ -68,13 +68,13 @@ public class MainController {
         try {
             String definition = dictionaryapi.getTopDefinition(word);
             if (definition == null) {
-                DefinitionAlert.show("No definition found for '" + word + "'");
+                Utilities.showInfoAlert("No definition found for '" + word + "'");
                 return;
             }
 
 
 // Fetch and cache images (synchronous)
-            List<String> imagePaths = imageService.fetchAndCacheImages(word, 5);
+            List<String> imagePaths = imageService.fetchAndCacheImages(word, 50);
 
 
             WordData data = new WordData(word, definition, imagePaths);
@@ -88,7 +88,7 @@ public class MainController {
 
             showResultWindow(data);
         } catch (IOException ex) {
-            DefinitionAlert.show("Error: " + ex.getMessage());
+            Utilities.showInfoAlert("Error: " + ex.getMessage());
         }
     }
 

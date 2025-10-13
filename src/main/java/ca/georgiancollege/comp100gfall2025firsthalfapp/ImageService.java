@@ -10,53 +10,17 @@ import java.util.*;
 
 public class ImageService {
 
-    private static final String IMAGE_DIR = "images";
+    private static final String ROOT_PATH = Path.of("src", "main", "resources",
+            ImageService.class.getPackage().getName().replace('.', '/')).toString();
+
+    private static final String IMAGE_DIR = ROOT_PATH + "/images";
+
     private static final int MAX_IMAGES = 5;
     public ImageService() {
         File dir = new File(IMAGE_DIR);
         if (!dir.exists()) dir.mkdirs();
     }
 
-    public List<String> getImages(String keyword) throws IOException {
-        List<String> cached = getCachedImages(keyword, MAX_IMAGES);
-        if (!cached.isEmpty()) return cached;
-
-        String encoded = URLEncoder.encode(keyword, StandardCharsets.UTF_8);
-        String apiUrl = "https://boringapi.com/api/v1/photos?search=" + encoded + "&limit=" + MAX_IMAGES;
-
-        HttpURLConnection conn = (HttpURLConnection) new URL(apiUrl).openConnection();
-        conn.setRequestMethod("GET");
-        conn.setConnectTimeout(8000);
-        conn.setReadTimeout(8000);
-
-        int code = conn.getResponseCode();
-        if (code != 200) {
-            System.err.println("Image fetch failed: " + code);
-            return cached; // return empty
-        }
-
-        try (BufferedReader br = new BufferedReader(
-                new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8))) {
-            StringBuilder sb = new StringBuilder();
-            String line;
-            while ((line = br.readLine()) != null) sb.append(line);
-
-            JsonObject json = JsonParser.parseString(sb.toString()).getAsJsonObject();
-            JsonArray photos = json.getAsJsonArray("photos");
-
-            List<String> resultPaths = new ArrayList<>();
-            for (int i = 0; i < Math.min(MAX_IMAGES, photos.size()); i++) {
-                JsonObject photo = photos.get(i).getAsJsonObject();
-                String imgUrl = photo.get("url").getAsString();
-
-                Path imgPath = Path.of(IMAGE_DIR, keyword + "_" + (i + 1) + ".jpg");
-                downloadImage(imgUrl, imgPath);
-                resultPaths.add(imgPath.toString());
-            }
-
-            return resultPaths;
-        }
-    }
 
     private List<String> getCachedImages(String keyword, int count) {
         List<String> files = new ArrayList<>();
@@ -104,13 +68,26 @@ public class ImageService {
             JsonArray photos = json.getAsJsonArray("photos");
 
             List<String> resultPaths = new ArrayList<>();
-            for (int i = 0; i < Math.min(count, photos.size()); i++) {
+
+
+            int matchedTitles = 0, i = 0;
+
+
+            while(matchedTitles < MAX_IMAGES && photos.size() > i) {
                 JsonObject photo = photos.get(i).getAsJsonObject();
                 String imgUrl = photo.get("url").getAsString();
 
-                Path imgPath = Path.of(IMAGE_DIR, keyword + "_" + (i + 1) + ".jpg");
+                if(!photo.get("title").getAsString().contains(keyword)) {
+                    i++;
+                    continue;
+                }
+
+                Path imgPath = Path.of(IMAGE_DIR, keyword + "_" + (matchedTitles + 1) + ".jpg");
                 downloadImage(imgUrl, imgPath);
                 resultPaths.add(imgPath.toString());
+
+                matchedTitles++;
+                i++;
             }
             return resultPaths;
         }

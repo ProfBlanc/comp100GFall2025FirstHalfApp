@@ -9,13 +9,18 @@ import com.google.gson.reflect.TypeToken;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
 
 public class WordCache {
 
-    private static final String CACHE_FILE = "word_cache.json";
+    private static final String ROOT_PATH = Path.of("src", "main", "resources",
+            ImageService.class.getPackage().getName().replace('.', '/')).toString();
+
+
+    private static final String CACHE_FILE = ROOT_PATH + "/data/word_cache.json";
     private Map<String, WordData> map = new LinkedHashMap<>();
 
 
