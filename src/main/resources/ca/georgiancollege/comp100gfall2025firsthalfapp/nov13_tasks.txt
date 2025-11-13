@@ -1,0 +1,21 @@
+Task 1:
+	Change game mode from gameNumbers to gameWords
+
+
+Task 2
+	Alter game so that if user CORRECT drags all items to
+	appropriate category, game display a "You Win" message
+Task 3
+	Create a screen that allows user to choose
+		- game mode
+		- game difficulty (easy, medium, hard)
+			adjust the timer accordingly
+	passes info to gamecontroller
+
+	Create a new .fxml file with a controller
+	in view: ComboBox for gamemode (nums or words), game level
+		submit button: on submit, read values
+
+	drag and drop .fxml, remove the controller attribute
+
+	in GameController: allow external set of time, game mode

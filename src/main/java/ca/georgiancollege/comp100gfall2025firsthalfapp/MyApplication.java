@@ -10,9 +10,9 @@ import java.io.IOException;
 public class MyApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MyApplication.class.getResource("main-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(MyApplication.class.getResource("drag-and-drop-game-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Word App");
+        stage.setTitle("Drag & Drop Game");
         stage.setScene(scene);
         stage.show();
     }

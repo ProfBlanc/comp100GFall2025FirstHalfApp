@@ -28,7 +28,7 @@ public class WordCache {
         WordCache wc = new WordCache();
         try {
             if (!Files.exists(Paths.get(CACHE_FILE))) return wc;
-            try (Reader r = new FileReader(CACHE_FILE)) {
+            try (Reader r = new FileReader(CACHE_FILE)) {  //Files.readLines()
                 Gson g = new Gson();
                 Type type = new TypeToken<Map<String, WordData>>(){}.getType();
                 wc.map = g.fromJson(r, type);

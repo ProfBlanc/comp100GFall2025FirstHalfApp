@@ -1,0 +1,9 @@
+apple
+beach
+car
+cat
+dog
+guitar
+pizza
+mountain
+soccer
