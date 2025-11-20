@@ -342,7 +342,7 @@ public class DragAndDropController {
                 if(value < 0){
                     calculateBonusPoints();
                     splashMessage("Success!");
-                    numOfIncorrectAnswers++;
+                    numOfCorrectAnswers++;
 
                 }
                 else{
@@ -356,7 +356,7 @@ public class DragAndDropController {
                 if(value >= 0 && value < 50){
                     calculateBonusPoints();
                     splashMessage("Success!");
-                    numOfIncorrectAnswers++;
+                    numOfCorrectAnswers++;
                 }
                 else{
                     splashMessage("Error");
@@ -367,7 +367,7 @@ public class DragAndDropController {
                 if(value >= 50){
                     calculateBonusPoints();
                     splashMessage("Success!");
-                    numOfIncorrectAnswers++;
+                    numOfCorrectAnswers++;
                 }
                 else{
                     splashMessage("Error");
